@@ -19,35 +19,70 @@ export default function GallerySection() {
     );
   };
 
-  // Auto-play gallery slider
+  // Auto-play gallery slider - pause when user is scrolling
   useEffect(() => {
     const totalImages = galleryImages.length;
-    const autoplayInterval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % totalImages);
-    }, 3000); // Change image every 3 seconds
+    let autoplayInterval: ReturnType<typeof setInterval>;
+    let scrollTimeout: ReturnType<typeof setTimeout>;
+    let isScrolling = false;
 
-    return () => clearInterval(autoplayInterval);
+    const startAutoplay = () => {
+      autoplayInterval = setInterval(() => {
+        if (!isScrolling) {
+          setCurrentImageIndex((prev) => (prev + 1) % totalImages);
+        }
+      }, 4000); // Increased to 4 seconds for smoother experience
+    };
+
+    const handleScroll = () => {
+      isScrolling = true;
+      clearInterval(autoplayInterval);
+
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+        startAutoplay();
+      }, 200);
+    };
+
+    startAutoplay();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      clearInterval(autoplayInterval);
+      clearTimeout(scrollTimeout);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [galleryImages.length]);
 
-  // Touch and swipe handlers for mobile
+  // Touch and swipe handlers for mobile - optimized with threshold
+  const minSwipeDistance = 75; // Increased threshold to avoid accidental swipes
+
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    const touchX = e.touches[0].clientX;
-    setTouchStart(touchX);
+    setTouchEnd(0); // Reset touchEnd
+    setTouchStart(e.touches[0].clientX);
   };
 
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    const touchX = e.touches[0].clientX;
-    setTouchEnd(touchX);
+    setTouchEnd(e.touches[0].clientX);
   };
 
   const handleTouchEnd = () => {
-    if (touchStart - touchEnd > 50) {
-      // Swiped left
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
       nextImage();
-    } else if (touchEnd - touchStart > 50) {
-      // Swiped right
+    } else if (isRightSwipe) {
       prevImage();
     }
+
+    // Reset values
+    setTouchStart(0);
+    setTouchEnd(0);
   };
 
   return (
@@ -101,11 +136,11 @@ export default function GallerySection() {
                 >
                   <div className="gallery-item-inner">
                     <img src={image.src} alt={image.alt} />
-                    {isActive && (
+                    {/* {isActive && (
                       <div className="gallery-item-caption">
                         <p>{image.alt}</p>
                       </div>
-                    )}
+                    )} */}
                   </div>
                 </div>
               );

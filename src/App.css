@@ -295,15 +295,20 @@
   width: 100%;
   height: 500px;
   perspective: 1000px;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .gallery-item {
   position: absolute;
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-out;
   cursor: pointer;
   opacity: 0;
   transform: translateX(0) scale(0.6) rotateY(30deg);
   pointer-events: none;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .gallery-item.hidden {
@@ -1229,6 +1234,11 @@
 
   .gallery-slides {
     height: 400px;
+    perspective: 800px;
+  }
+
+  .gallery-item {
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
   }
 
   .gallery-item-inner {
@@ -1236,20 +1246,21 @@
     height: 380px;
   }
 
+  /* Simplified transforms for better mobile performance */
   .gallery-item.prev {
-    transform: translateX(-250px) scale(0.75) rotateY(15deg);
+    transform: translateX(-250px) scale(0.75) rotateY(10deg);
   }
 
   .gallery-item.next {
-    transform: translateX(250px) scale(0.75) rotateY(-15deg);
+    transform: translateX(250px) scale(0.75) rotateY(-10deg);
   }
 
   .gallery-item.prev-2 {
-    transform: translateX(-400px) scale(0.6) rotateY(25deg);
+    transform: translateX(-400px) scale(0.6) rotateY(15deg);
   }
 
   .gallery-item.next-2 {
-    transform: translateX(400px) scale(0.6) rotateY(-25deg);
+    transform: translateX(400px) scale(0.6) rotateY(-15deg);
   }
 
   /* Hide navigation buttons on tablet and mobile */
@@ -1445,6 +1456,11 @@
 
   .gallery-slides {
     height: 320px;
+    perspective: 600px;
+  }
+
+  .gallery-item {
+    transition: transform 0.35s ease-out, opacity 0.35s ease-out;
   }
 
   .gallery-item-inner {
@@ -1452,19 +1468,19 @@
     height: 320px;
   }
 
-  /* Show center and adjacent images on mobile */
+  /* Simplified animations for mobile performance */
   .gallery-item.active {
     transform: translateX(0) scale(1) rotateY(0deg);
   }
 
   .gallery-item.prev {
-    transform: translateX(-180px) scale(0.65) rotateY(20deg);
-    opacity: 0.6;
+    transform: translateX(-180px) scale(0.7) rotateY(8deg);
+    opacity: 0.5;
   }
 
   .gallery-item.next {
-    transform: translateX(180px) scale(0.65) rotateY(-20deg);
-    opacity: 0.6;
+    transform: translateX(180px) scale(0.7) rotateY(-8deg);
+    opacity: 0.5;
   }
 
   .gallery-item.prev-2,
@@ -1472,6 +1488,7 @@
     opacity: 0;
     transform: scale(0.3);
     pointer-events: none;
+    display: none;
   }
 
   /* Hide navigation buttons on mobile */

@@ -97,23 +97,26 @@ export default function MusicPlayer() {
         </div>
       )}
 
-      <button
-        className="music-player-button"
-        onClick={togglePlay}
-        aria-label={isPlaying ? "Pause music" : "Play music"}
-      >
-        {isPlaying ? (
-          // Pause icon
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" fill="currentColor" />
-          </svg>
-        ) : (
-          // Play icon
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M8 5v14l11-7z" fill="currentColor" />
-          </svg>
-        )}
-      </button>
+      {/* Music player button - only show when prompt is hidden */}
+      {!showPrompt && (
+        <button
+          className="music-player-button"
+          onClick={togglePlay}
+          aria-label={isPlaying ? "Pause music" : "Play music"}
+        >
+          {isPlaying ? (
+            // Pause icon
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" fill="currentColor" />
+            </svg>
+          ) : (
+            // Play icon
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M8 5v14l11-7z" fill="currentColor" />
+            </svg>
+          )}
+        </button>
+      )}
     </>
   );
 }

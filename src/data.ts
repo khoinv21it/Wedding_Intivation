@@ -4,12 +4,12 @@ export const weddingData = {
   bride: {
     fullName: "Nguyễn Hoàng Trang",
     shortName: "Trang",
-    photo: "/images/v/HNV_0716.jpg",
+    photo: "/images/cd2.jpg",
   },
   groom: {
     fullName: "Lê Văn Sinh",
     shortName: "Sinh",
-    photo: "/images/cr2.jpg",
+    photo: "/images/HNV_1945.jpg",
   },
 
   // Wedding Date & Time
