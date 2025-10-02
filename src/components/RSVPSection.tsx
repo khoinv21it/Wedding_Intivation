@@ -153,7 +153,7 @@ export default function RSVPSection() {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Bạn tham dự cùng ai?</label>
+              <label className="form-label">Bạn đi cùng ai?</label>
               <input
                 type="text"
                 name="accompaniedBy"

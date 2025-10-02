@@ -11,11 +11,11 @@ export default function EventDetailsSection() {
           <div className="bride-photo">
             <img src={weddingData.bride.photo} alt="Cô dâu" />
           </div>
-          <span className="heart-icon">♥</span>
           <div className="groom-photo">
             <img src={weddingData.groom.photo} alt="Chú rể" />
           </div>
         </div>
+        <span className="heart-icon">♥</span>
         <h3>{weddingData.venue.name}</h3>
         <p>
           <strong>Địa chỉ:</strong> {weddingData.venue.address}

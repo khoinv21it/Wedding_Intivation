@@ -508,7 +508,18 @@
   justify-content: center;
   align-items: center;
   gap: 40px;
-  margin: 35px 0;
+  margin: 35px 0 15px 0;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+.event-card .heart-icon {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  display: block;
+  text-align: center;
+  margin: 10px 0 20px 0;
+  animation: heartbeat 1.5s ease-in-out infinite;
 }
 
 .bride-photo,
@@ -521,6 +532,7 @@
   box-shadow: 0 10px 30px rgba(212, 165, 165, 0.3);
   transition: all 0.4s ease;
   position: relative;
+  flex-shrink: 0;
 }
 
 .bride-photo:hover,
@@ -550,7 +562,9 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   transition: transform 0.4s ease;
+  display: block;
 }
 
 .bride-photo:hover img,
@@ -1279,6 +1293,26 @@
     padding: 60px 20px;
   }
 
+  .bride-groom-photos {
+    gap: 20px;
+    margin: 25px 0 10px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .event-card .heart-icon {
+    font-size: 2rem;
+    margin: 8px 0 15px 0;
+  }
+
+  .bride-photo,
+  .groom-photo {
+    width: 140px;
+    height: 140px;
+    border: 4px solid var(--primary-color);
+    min-width: 100px;
+  }
+
   .amount-presets {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1485,6 +1519,30 @@
     font-size: 0.95rem;
   }
 
+  .bride-groom-photos {
+    gap: 15px;
+    margin: 20px 0 8px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .event-card .heart-icon {
+    font-size: 1.8rem;
+    margin: 6px 0 12px 0;
+  }
+
+  .bride-photo,
+  .groom-photo {
+    width: 110px;
+    height: 110px;
+    border: 3px solid var(--primary-color);
+    min-width: 90px;
+  }
+
+  .event-card {
+    padding: 40px 25px;
+  }
+
   .event-card h3 {
     font-size: 1.3rem;
   }
@@ -1559,14 +1617,31 @@
     padding: 25px 15px;
   }
 
+  .bride-groom-photos {
+    gap: 15px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
   .bride-photo,
   .groom-photo {
     width: 100px;
     height: 100px;
+    border: 3px solid var(--primary-color);
+    min-width: 80px;
   }
 
   .event-card {
     padding: 30px 20px;
+  }
+
+  .event-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .event-card p {
+    font-size: 0.9rem;
   }
 
   .qr-container {
@@ -1598,6 +1673,24 @@
   .indicator-dot.active {
     width: 16px;
   }
+
+  .bride-groom-photos {
+    gap: 12px;
+    margin: 15px 0 8px 0;
+  }
+
+  .event-card .heart-icon {
+    font-size: 1.6rem;
+    margin: 5px 0 10px 0;
+  }
+
+  .bride-photo,
+  .groom-photo {
+    width: 90px;
+    height: 90px;
+    border: 2px solid var(--primary-color);
+    min-width: 70px;
+  }
 }
 
 /* Form buttons responsive */
@@ -1625,4 +1718,37 @@
 .qr-amount-presets {
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
+}
+
+/* Ultra Small Screens */
+@media (max-width: 320px) {
+  .bride-groom-photos {
+    gap: 10px;
+    margin: 12px 0 5px 0;
+  }
+
+  .bride-photo,
+  .groom-photo {
+    width: 80px;
+    height: 80px;
+    border: 2px solid var(--primary-color);
+    min-width: 60px;
+  }
+
+  .event-card .heart-icon {
+    font-size: 1.4rem;
+    margin: 5px 0 8px 0;
+  }
+
+  .event-card {
+    padding: 25px 15px;
+  }
+
+  .event-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .event-card p {
+    font-size: 0.85rem;
+  }
 }

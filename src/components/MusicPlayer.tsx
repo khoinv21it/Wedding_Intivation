@@ -3,41 +3,78 @@ import { useState, useRef, useEffect } from "react";
 export default function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [showPrompt, setShowPrompt] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     const handleInteraction = () => {
       if (!hasInteracted && audioRef.current) {
         setHasInteracted(true);
-        audioRef.current
-          .play()
-          .then(() => {
-            setIsPlaying(true);
-          })
-          .catch((error) => {
-            console.log("Auto-play prevented:", error);
-          });
+        setShowPrompt(false);
+
+        // Thử phát nhạc sau khi có tương tác
+        const playPromise = audioRef.current.play();
+
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              setIsPlaying(true);
+              setShowPrompt(false);
+            })
+            .catch((error) => {
+              console.log("Auto-play prevented:", error);
+              // Nếu không phát được, hiển thị prompt
+              setHasInteracted(false);
+              setShowPrompt(true);
+            });
+        }
       }
     };
 
-    // Lắng nghe sự kiện scroll và click để bắt đầu phát nhạc
-    window.addEventListener("scroll", handleInteraction, { once: true });
-    window.addEventListener("click", handleInteraction, { once: true });
+    // Hiển thị prompt sau 2 giây nếu chưa phát nhạc
+    const promptTimer = setTimeout(() => {
+      if (!hasInteracted && !isPlaying) {
+        setShowPrompt(true);
+      }
+    }, 2000);
+
+    // Lắng nghe nhiều loại tương tác cho mobile
+    const events = ["click", "touchstart", "touchend", "scroll", "keydown"];
+
+    events.forEach((event) => {
+      window.addEventListener(event, handleInteraction, {
+        once: true,
+        passive: true,
+      });
+    });
 
     return () => {
-      window.removeEventListener("scroll", handleInteraction);
-      window.removeEventListener("click", handleInteraction);
+      clearTimeout(promptTimer);
+      events.forEach((event) => {
+        window.removeEventListener(event, handleInteraction);
+      });
     };
-  }, [hasInteracted]);
+  }, [hasInteracted, isPlaying]);
 
   const togglePlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        setIsPlaying(false);
       } else {
-        audioRef.current.play();
+        const playPromise = audioRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              setIsPlaying(true);
+              setHasInteracted(true);
+              setShowPrompt(false);
+            })
+            .catch((error) => {
+              console.log("Play failed:", error);
+            });
+        }
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
@@ -49,6 +86,16 @@ export default function MusicPlayer() {
         loop
         preload="auto"
       />
+
+      {/* Music prompt notification */}
+      {showPrompt && !isPlaying && (
+        <div className="music-prompt" onClick={togglePlay}>
+          <div className="music-prompt-content">
+            <span className="music-prompt-icon">🎵</span>
+            <span className="music-prompt-text">Nhấn để phát nhạc</span>
+          </div>
+        </div>
+      )}
 
       <button
         className="music-player-button"
@@ -66,15 +113,6 @@ export default function MusicPlayer() {
             <path d="M8 5v14l11-7z" fill="currentColor" />
           </svg>
         )}
-        {/* <span className="music-wave">
-          {isPlaying && (
-            <>
-              <span className="wave-bar"></span>
-              <span className="wave-bar"></span>
-              <span className="wave-bar"></span>
-            </>
-          )}
-        </span> */}
       </button>
     </>
   );
